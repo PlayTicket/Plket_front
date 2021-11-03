@@ -1,15 +1,27 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, View, Text, TextInput} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {preURL} from '../../constants/preURL';
+import axios from 'axios';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {COLORS} from '../../styles/Colors';
 
 const NickName = ({navigation}) => {
   const [nickName, setNickName] = useState('');
 
-  AsyncStorage.setItem('NickName', nickName, () => {
-    console.log('유저 닉네임 저장 완료');
-  });
+  // AsyncStorage.setItem('NickName', nickName, () => {
+  //   console.log('유저 닉네임 저장 완료');
+  // });
+
+  const postNickname = () => {
+    const data = {
+      nickName: nickName,
+    };
+    axios.post(preURL.preURL + '', data).catch(err => {
+      console.log('닉네임 전송에 실패: ', err);
+    });
+    navigation.navigate('Taste');
+  };
 
   return (
     <View
@@ -40,7 +52,7 @@ const NickName = ({navigation}) => {
         }}
       />
       <TouchableOpacity
-        onPress={() => navigation.navigate('Taste')}
+        onPress={postNickname}
         style={{
           marginTop: '15%',
           backgroundColor: COLORS.navy,

@@ -4,9 +4,14 @@ import {TouchableOpacity, View, Text} from 'react-native';
 const Taste = ({navigation}) => {
   return (
     <View>
-      <TouchableOpacity onPress={() => navigation.navigate('NavTabs')}>
-        <Text>취향분석</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={() => navigation.navigate('Nickname')}>
+          <Text>뒤로가기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('NavTabs')}>
+          <Text>건너뛰기</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
