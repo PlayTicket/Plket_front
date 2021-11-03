@@ -1724,6 +1724,13 @@
   "resolved" "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   "version" "2.1.2"
 
+"axios@^0.24.0":
+  "integrity" "sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz"
+  "version" "0.24.0"
+  dependencies:
+    "follow-redirects" "^1.14.4"
+
 "babel-core@^7.0.0-bridge.0":
   "integrity" "sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg=="
   "resolved" "https://registry.npmjs.org/babel-core/-/babel-core-7.0.0-bridge.0.tgz"
@@ -3156,6 +3163,11 @@
   "integrity" "sha512-yp0oSVaawR8p39PGhOb/TtclByOxJirI+DVPR99GkeRY8xZ/4gLt+BeqcLgJsed1tE1YwMgdiAYKSfhoLTFVeg=="
   "resolved" "https://registry.npmjs.org/flow-parser/-/flow-parser-0.162.1.tgz"
   "version" "0.162.1"
+
+"follow-redirects@^1.14.4":
+  "integrity" "sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.5.tgz"
+  "version" "1.14.5"
 
 "for-in@^1.0.2":
   "integrity" "sha1-gQaNKVqBQuwKxybG4iAMMPttXoA="
@@ -5607,7 +5619,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.7.2":
+"prop-types@^15.6.2", "prop-types@^15.7.2":
   "integrity" "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   "version" "15.7.2"
@@ -5681,6 +5693,12 @@
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
+
+"react-native-camera@git+https://git@github.com/react-native-community/react-native-camera.git":
+  "resolved" "git+https://git@github.com/react-native-community/react-native-camera.git#7cdfb6ec127decf1ac5686635afb7f07557becc5"
+  "version" "4.2.1"
+  dependencies:
+    "prop-types" "^15.6.2"
 
 "react-native-codegen@^0.0.7":
   "integrity" "sha512-dwNgR8zJ3ALr480QnAmpTiqvFo+rDtq6V5oCggKhYFlRjzOmVSFn3YD41u8ltvKS5G2nQ8gCs2vReFFnRGLYng=="

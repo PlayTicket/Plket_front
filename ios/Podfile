@@ -12,6 +12,8 @@ target 'plket_front' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'plket_frontTests' do
     inherit! :complete
     # Pods for testing
