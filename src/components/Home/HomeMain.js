@@ -19,40 +19,50 @@ const HomeMain = ({navigation}) => {
 
   useEffect(() => {
     axios
-      .get(preURL.preURL + '/main/musical/1')
+      .get('http://192.168.35.40' + '/main/musical/1')
       .then(res => {
         console.log('뮤지컬 정보 받았다!');
         console.log('응답:', res);
-        setMList(res);
+        const mSection = [
+          {title: 'Made for you', horizontal: true, data: res.data},
+        ];
+        setMList(mSection);
       })
       .catch(err => {
         console.log('에러 발생: ', err);
       });
     axios
-      .get(preURL.preURL + '/main/play/1')
+      .get('http://192.168.35.40' + '/main/play/1')
       .then(res => {
         console.log('연극 정보 받았다!');
         console.log('응답:', res);
-        setPList(res);
+        const pSection = [
+          {title: 'Made for you', horizontal: true, data: res.data},
+        ];
+        setPList(pSection);
       })
       .catch(err => {
         console.log('에러 발생: ', err);
       });
     axios
-      .get(preURL.preURL + '/main/concert/1')
+      .get('http://192.168.35.40' + '/main/concert/1')
       .then(res => {
         console.log('콘서트 정보 받았다!');
         console.log('응답:', res);
-        setCList(res);
+        const cSection = [
+          {title: 'Made for you', horizontal: true, data: res.data},
+        ];
+        setCList(cSection);
       })
       .catch(err => {
         console.log('에러 발생: ', err);
       });
-  });
+  }, []);
 
   const ListItem = ({item}) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Detail', {playid: item.playid})}>
         <View style={styles.item}>
           <Image
             source={{
@@ -60,6 +70,7 @@ const HomeMain = ({navigation}) => {
             }}
             style={styles.poster}
             resizeMode="cover"
+            key={item.playid}
           />
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.star}>예상 ★{item.star}</Text>
@@ -87,7 +98,7 @@ const HomeMain = ({navigation}) => {
           <SectionList
             contentContainerStyle={{paddingHorizontal: 5}}
             stickySectionHeadersEnabled={false}
-            sections={SECTIONS1}
+            sections={mList}
             renderSectionHeader={({section}) => (
               <>
                 {section.horizontal ? (
@@ -118,7 +129,7 @@ const HomeMain = ({navigation}) => {
           <SectionList
             contentContainerStyle={{paddingHorizontal: 5}}
             stickySectionHeadersEnabled={false}
-            sections={SECTIONS1}
+            sections={pList}
             renderSectionHeader={({section}) => (
               <>
                 {section.horizontal ? (
@@ -149,7 +160,7 @@ const HomeMain = ({navigation}) => {
           <SectionList
             contentContainerStyle={{paddingHorizontal: 5}}
             stickySectionHeadersEnabled={false}
-            sections={SECTIONS1}
+            sections={cList}
             renderSectionHeader={({section}) => (
               <>
                 {section.horizontal ? (
