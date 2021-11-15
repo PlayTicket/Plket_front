@@ -19,7 +19,7 @@ const HomeMain = ({navigation}) => {
 
   useEffect(() => {
     axios
-      .get('http://192.168.35.40' + '/main/musical/1')
+      .get('http://192.168.35.40:8080' + '/v1/home/musical/1')
       .then(res => {
         console.log('뮤지컬 정보 받았다!');
         console.log('응답:', res);
@@ -32,7 +32,7 @@ const HomeMain = ({navigation}) => {
         console.log('에러 발생: ', err);
       });
     axios
-      .get('http://192.168.35.40' + '/main/play/1')
+      .get('http://192.168.35.40:8080' + '/v1/home/stage/1')
       .then(res => {
         console.log('연극 정보 받았다!');
         console.log('응답:', res);
@@ -45,7 +45,7 @@ const HomeMain = ({navigation}) => {
         console.log('에러 발생: ', err);
       });
     axios
-      .get('http://192.168.35.40' + '/main/concert/1')
+      .get('http://192.168.35.40:8080' + '/v1/home/concert/1')
       .then(res => {
         console.log('콘서트 정보 받았다!');
         console.log('응답:', res);
@@ -66,7 +66,7 @@ const HomeMain = ({navigation}) => {
         <View style={styles.item}>
           <Image
             source={{
-              uri: item.uri,
+              uri: `${item.uri}`,
             }}
             style={styles.poster}
             resizeMode="cover"
