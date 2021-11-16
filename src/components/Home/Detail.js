@@ -1,23 +1,38 @@
-import React, {setState} from 'react';
-import {TouchableOpacity, View, Text, SafeAreaView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import axios from 'axios';
 
 const Detail = ({navigation, route}) => {
   const params = route.params;
-  const [info, setInfo] = setState({});
-  const [reviews, setReivews] = setState([]);
+  const playid = params.playid;
+  let [info, setInfo] = useState({});
+  const [reviews, setReivews] = useState([]);
 
+  var information = {};
   useEffect(() => {
+    let isMount = true;
+
     axios
-      .get('http://192.168.35.40' + `/v1/play/${params}/1`) // 유저 고유번호로 변경
+      .get('http://192.168.35.40:8080' + `/v1/play/${playid}/1`) // 유저 고유번호로 변경
       .then(res => {
+        console.log('===================[Detail]=================');
         console.log('공연 세부 정보 받았다! ');
-        console.log('응답:', res);
         setInfo(res.data);
       })
       .catch(err => {
         console.log('에러 발생: ', err);
       });
-  });
+    return () => {
+      isMount = false;
+    };
+  }, []);
 
   const renderItem = ({item}) => {
     return (
@@ -33,40 +48,88 @@ const Detail = ({navigation, route}) => {
       </View>
     );
   };
+  console.log('uri', info.mystar);
 
   return (
-    <SafeAreaView>
-      <TouchableOpacity onPress={navigation.navigate('HomeMain')}>
+    <SafeAreaView
+      style={{
+        paddingLeft: '5%',
+        paddingRight: '5%',
+        height: '100%',
+        backgroundColor: '#ffffff',
+      }}>
+      <TouchableOpacity>
         <Text></Text>
         <Text>뒤로가기</Text>
       </TouchableOpacity>
-      <View>
-        <View>
-          <Image source={info.uri} />
-        </View>
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          margin: 10,
+          marginBottom: 15,
+        }}>
+        <ImageBackground
+          source={require('../../assets/PosterBack.png')}
+          style={{
+            width: 246,
+            height: 313,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={{uri: info.uri}}
+            style={{
+              width: 193,
+              height: 258,
+              borderColor: '#CCCCCC',
+              borderWidth: 0.5,
+            }}
+          />
+        </ImageBackground>
       </View>
-      <View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 10,
+        }}>
         <View>
-          <Text>{info.title}</Text>
-          <Text>{info.genre}</Text>
-          {mystar ? (
-            <Text>별점 ★{info.mystar}</Text>
-          ) : (
-            <Text>예상별점 ★{info.star}</Text>
-          )}
+          <Text style={{fontSize: 24}}>{info.title}</Text>
+          <Text style={{fontSize: 18, color: '#6B6B6B'}}>{info.genre}</Text>
+          <View>
+            {info.mystar == 0 ? (
+              <Text style={{fontSize: 18}}>별점 ★{info.mystar}</Text>
+            ) : (
+              <Text style={{fontSize: 18}}>예상별점 ★{info.star}</Text>
+            )}
+          </View>
         </View>
         <TouchableOpacity>
-          <Text>장바구니 아이콘</Text>
+          <Text>👜</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      <View
+        style={{
+          marginBottom: 10,
+          borderColor: '#CCCCCCC',
+          borderWidth: 1,
+          borderRadius: 15,
+          padding: 10,
+        }}>
         <Text>평균별점</Text>
         <Text>{info.star}</Text>
       </View>
-      <View>
+      <View
+        style={{borderColor: '#CCCCCCC', borderTopWidth: 0.5, paddingTop: 10}}>
         <Text>공연평</Text>
       </View>
-      <View> {reviews.map(item => renderItem({item}))}</View>
+      <View>
+        <Text>{reviews.map(item => renderItem({item}))}</Text>
+      </View>
     </SafeAreaView>
   );
 };
