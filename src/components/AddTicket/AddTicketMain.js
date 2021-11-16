@@ -32,19 +32,29 @@ const AddTicketMain = ({navigation}) => {
       type: 'image/jpeg',
       uri: photoData.uri,
     });
-    const response = await fetch(preURL.preURL + '/image/name', {
-      method: 'POST',
-      body: fd,
-      headers: {
-        'content-type': 'multipart/form-data',
+    console.log(fd);
+
+    const response = await fetch(
+      'http://192.168.35.40:8080' + 'v1/ticket/image',
+      {
+        method: 'POST',
+        body: fd,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
       },
-    })
-      .post(preURL.preURL + '/ticket/post', photoData)
+    )
+      .post('http://192.168.35.40:8080' + '/v1/ticket/image', photoData)
       .then(response => {
-        console.log(response);
+        console.log('===================[AddTicketMain]=================');
+        console.log('response:', response);
         setTextData(response);
         Alert.alert('티켓 정보를 확인해주세요', textData, [
-          {text: '확인', onPress: () => navigation.navigate('AddStars')},
+          {
+            text: '확인',
+            onPress: () =>
+              navigation.navigate('AddStars', {textData: textData}),
+          },
           {
             text: '다시 시도',
             onPress: () => {
@@ -60,7 +70,7 @@ const AddTicketMain = ({navigation}) => {
 
   return (
     <View style={{flex: 1, display: 'flex', alignItems: 'center'}}>
-      <Text>AddTicketMain</Text>
+      <Text>티켓 촬영</Text>
       <RNCamera
         ref={cameraRef}
         style={{

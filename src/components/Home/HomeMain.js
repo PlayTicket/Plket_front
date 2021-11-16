@@ -8,6 +8,8 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ImageBackground,
+  ScrollView,
 } from 'react-native';
 import axios from 'axios';
 import {preURL} from '../../constants/preURL';
@@ -81,107 +83,113 @@ const HomeMain = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={{height: '10%'}}>
-        <Text>헤더</Text>
+      <View style={{height: 75}}>
+        <ImageBackground
+          style={{height: 75, width: '100%'}}
+          source={require('../../assets/Header.png')}
+        />
       </View>
-      <View
-        style={{
-          height: 210,
-          borderColor: '#CBCBD4',
-          borderBottomWidth: 1,
-        }}>
-        <View style={styles.bar}>
-          <Text style={styles.category}>뮤지컬</Text>
-          <Text>></Text>
+      <ScrollView>
+        <View
+          style={{
+            height: 210,
+            borderColor: '#CBCBD4',
+            borderBottomWidth: 1,
+          }}>
+          <View style={styles.bar}>
+            <Text style={styles.category}>뮤지컬</Text>
+            <Text>></Text>
+          </View>
+          <SafeAreaView>
+            <SectionList
+              contentContainerStyle={{paddingHorizontal: 5}}
+              stickySectionHeadersEnabled={false}
+              sections={mList}
+              renderSectionHeader={({section}) => (
+                <>
+                  {section.horizontal ? (
+                    <FlatList
+                      horizontal
+                      data={section.data}
+                      renderItem={({item}) => <ListItem item={item} />}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  ) : null}
+                </>
+              )}
+              renderItem={({item, section}) => {
+                if (section.horizontal) {
+                  return null;
+                }
+                return <ListItem item={item} />;
+              }}
+            />
+          </SafeAreaView>
         </View>
-        <SafeAreaView>
-          <SectionList
-            contentContainerStyle={{paddingHorizontal: 5}}
-            stickySectionHeadersEnabled={false}
-            sections={mList}
-            renderSectionHeader={({section}) => (
-              <>
-                {section.horizontal ? (
-                  <FlatList
-                    horizontal
-                    data={section.data}
-                    renderItem={({item}) => <ListItem item={item} />}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                ) : null}
-              </>
-            )}
-            renderItem={({item, section}) => {
-              if (section.horizontal) {
-                return null;
-              }
-              return <ListItem item={item} />;
-            }}
-          />
-        </SafeAreaView>
-      </View>
-      <View style={{height: 210, borderColor: '#CBCBD4', borderBottomWidth: 1}}>
-        <View style={styles.bar}>
-          <Text style={styles.category}>연극</Text>
-          <Text>></Text>
+        <View
+          style={{height: 210, borderColor: '#CBCBD4', borderBottomWidth: 1}}>
+          <View style={styles.bar}>
+            <Text style={styles.category}>연극</Text>
+            <Text>></Text>
+          </View>
+          <SafeAreaView>
+            <SectionList
+              contentContainerStyle={{paddingHorizontal: 5}}
+              stickySectionHeadersEnabled={false}
+              sections={pList}
+              renderSectionHeader={({section}) => (
+                <>
+                  {section.horizontal ? (
+                    <FlatList
+                      horizontal
+                      data={section.data}
+                      renderItem={({item}) => <ListItem item={item} />}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  ) : null}
+                </>
+              )}
+              renderItem={({item, section}) => {
+                if (section.horizontal) {
+                  return null;
+                }
+                return <ListItem item={item} />;
+              }}
+            />
+          </SafeAreaView>
         </View>
-        <SafeAreaView>
-          <SectionList
-            contentContainerStyle={{paddingHorizontal: 5}}
-            stickySectionHeadersEnabled={false}
-            sections={pList}
-            renderSectionHeader={({section}) => (
-              <>
-                {section.horizontal ? (
-                  <FlatList
-                    horizontal
-                    data={section.data}
-                    renderItem={({item}) => <ListItem item={item} />}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                ) : null}
-              </>
-            )}
-            renderItem={({item, section}) => {
-              if (section.horizontal) {
-                return null;
-              }
-              return <ListItem item={item} />;
-            }}
-          />
-        </SafeAreaView>
-      </View>
-      <View style={{height: 210}}>
-        <View style={styles.bar}>
-          <Text style={styles.category}>콘서트</Text>
-          <Text>></Text>
+        <View style={{height: 210}}>
+          <View style={styles.bar}>
+            <Text style={styles.category}>콘서트</Text>
+            <Text>></Text>
+          </View>
+          <SafeAreaView>
+            <SectionList
+              contentContainerStyle={{paddingHorizontal: 5}}
+              stickySectionHeadersEnabled={false}
+              sections={cList}
+              renderSectionHeader={({section}) => (
+                <>
+                  {section.horizontal ? (
+                    <FlatList
+                      horizontal
+                      data={section.data}
+                      renderItem={({item}) => <ListItem item={item} />}
+                      showsHorizontalScrollIndicator={false}
+                    />
+                  ) : null}
+                </>
+              )}
+              renderItem={({item, section}) => {
+                if (section.horizontal) {
+                  return null;
+                }
+                return <ListItem item={item} />;
+              }}
+            />
+          </SafeAreaView>
         </View>
-        <SafeAreaView>
-          <SectionList
-            contentContainerStyle={{paddingHorizontal: 5}}
-            stickySectionHeadersEnabled={false}
-            sections={cList}
-            renderSectionHeader={({section}) => (
-              <>
-                {section.horizontal ? (
-                  <FlatList
-                    horizontal
-                    data={section.data}
-                    renderItem={({item}) => <ListItem item={item} />}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                ) : null}
-              </>
-            )}
-            renderItem={({item, section}) => {
-              if (section.horizontal) {
-                return null;
-              }
-              return <ListItem item={item} />;
-            }}
-          />
-        </SafeAreaView>
-      </View>
+      </ScrollView>
     </View>
   );
 };
