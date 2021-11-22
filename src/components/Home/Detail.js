@@ -8,19 +8,22 @@ import {
   ImageBackground,
 } from 'react-native';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {preURL} from '../../constants/preURL';
 
 const Detail = ({navigation, route}) => {
   const params = route.params;
   const playid = params.playid;
   let [info, setInfo] = useState({});
   const [reviews, setReivews] = useState([]);
+  const [scrap, setScrap] = useState(false);
 
   useEffect(() => {
     console.log('===================[Detail]=================');
     let isMount = true;
 
     axios
-      .get('http://172.20.5.72:8080' + `/v1/play/${playid}/1`) // 유저 고유번호로 변경
+      .get(preURL.preURL + `/v1/play/${playid}/1`) // 유저 고유번호로 변경
       .then(res => {
         console.log('공연 세부 정보 받았다! ');
         setInfo(res.data);
@@ -32,6 +35,17 @@ const Detail = ({navigation, route}) => {
       isMount = false;
     };
   }, []);
+
+  const postScrap = num => {
+    axios
+      .post(preURL.preURL + `/v1/play/${playid}/1/${num}`) // 유저 고유번호로 변경
+      .then(() => {
+        console.log('장바구니 정보 보냈다! ');
+      })
+      .catch(err => {
+        console.log('에러 발생: ', err);
+      });
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -47,7 +61,6 @@ const Detail = ({navigation, route}) => {
       </View>
     );
   };
-  console.log('uri', info.mystar);
 
   return (
     <SafeAreaView
@@ -108,7 +121,27 @@ const Detail = ({navigation, route}) => {
           </View>
         </View>
         <TouchableOpacity>
-          <Text>👜</Text>
+          {scrap ? (
+            <Icon
+              size={35}
+              color="#001A72"
+              name="cart"
+              onPress={() => {
+                setScrap(!scrap);
+                postScrap(1);
+              }}
+            />
+          ) : (
+            <Icon
+              size={35}
+              color="#001A72"
+              name="cart-outline"
+              onPress={() => {
+                setScrap(!scrap);
+                postScrap(0);
+              }}
+            />
+          )}
         </TouchableOpacity>
       </View>
       <View
