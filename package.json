@@ -21,6 +21,7 @@
     "react": "17.0.2",
     "react-native": "0.66.1",
     "react-native-camera": "git+https://git@github.com/react-native-community/react-native-camera.git",
+    "react-native-dropdown-picker": "^5.2.3",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-ratings": "^8.1.0",
     "react-native-safe-area-context": "^3.3.2",
