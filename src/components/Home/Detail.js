@@ -15,14 +15,13 @@ const Detail = ({navigation, route}) => {
   let [info, setInfo] = useState({});
   const [reviews, setReivews] = useState([]);
 
-  var information = {};
   useEffect(() => {
+    console.log('===================[Detail]=================');
     let isMount = true;
 
     axios
-      .get('http://192.168.35.40:8080' + `/v1/play/${playid}/1`) // 유저 고유번호로 변경
+      .get('http://172.20.5.72:8080' + `/v1/play/${playid}/1`) // 유저 고유번호로 변경
       .then(res => {
-        console.log('===================[Detail]=================');
         console.log('공연 세부 정보 받았다! ');
         setInfo(res.data);
       })
