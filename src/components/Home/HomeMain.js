@@ -21,7 +21,7 @@ const HomeMain = ({navigation}) => {
 
   useEffect(() => {
     axios
-      .get('http://192.168.35.40:8080' + '/v1/home/musical/1')
+      .get(preURL.preURL + '/v1/home/musical/1')
       .then(res => {
         console.log('뮤지컬 정보 받았다!');
         console.log('응답:', res);
@@ -34,7 +34,7 @@ const HomeMain = ({navigation}) => {
         console.log('에러 발생: ', err);
       });
     axios
-      .get('http://192.168.35.40:8080' + '/v1/home/stage/1')
+      .get(preURL.preURL + '/v1/home/stage/1')
       .then(res => {
         console.log('연극 정보 받았다!');
         console.log('응답:', res);
@@ -47,7 +47,7 @@ const HomeMain = ({navigation}) => {
         console.log('에러 발생: ', err);
       });
     axios
-      .get('http://192.168.35.40:8080' + '/v1/home/concert/1')
+      .get(preURL.preURL + '/v1/home/concert/1')
       .then(res => {
         console.log('콘서트 정보 받았다!');
         console.log('응답:', res);
@@ -89,107 +89,113 @@ const HomeMain = ({navigation}) => {
           source={require('../../assets/Header.png')}
         />
       </View>
-      <ScrollView>
-        <View
-          style={{
-            height: 210,
-            borderColor: '#CBCBD4',
-            borderBottomWidth: 1,
-          }}>
-          <View style={styles.bar}>
-            <Text style={styles.category}>뮤지컬</Text>
+      <View
+        style={{
+          height: 210,
+          borderColor: '#CBCBD4',
+          borderBottomWidth: 1,
+        }}>
+        <View style={styles.bar}>
+          <Text style={styles.category}>뮤지컬</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('More', {category: 'musical'})}>
             <Text>></Text>
-          </View>
-          <SafeAreaView>
-            <SectionList
-              contentContainerStyle={{paddingHorizontal: 5}}
-              stickySectionHeadersEnabled={false}
-              sections={mList}
-              renderSectionHeader={({section}) => (
-                <>
-                  {section.horizontal ? (
-                    <FlatList
-                      horizontal
-                      data={section.data}
-                      renderItem={({item}) => <ListItem item={item} />}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  ) : null}
-                </>
-              )}
-              renderItem={({item, section}) => {
-                if (section.horizontal) {
-                  return null;
-                }
-                return <ListItem item={item} />;
-              }}
-            />
-          </SafeAreaView>
+          </TouchableOpacity>
         </View>
-        <View
-          style={{height: 210, borderColor: '#CBCBD4', borderBottomWidth: 1}}>
-          <View style={styles.bar}>
-            <Text style={styles.category}>연극</Text>
+        <SafeAreaView>
+          <SectionList
+            contentContainerStyle={{paddingHorizontal: 5}}
+            stickySectionHeadersEnabled={false}
+            sections={mList}
+            renderSectionHeader={({section}) => (
+              <>
+                {section.horizontal ? (
+                  <FlatList
+                    horizontal
+                    data={section.data}
+                    renderItem={({item}) => <ListItem item={item} />}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                ) : null}
+              </>
+            )}
+            renderItem={({item, section}) => {
+              if (section.horizontal) {
+                return null;
+              }
+              return <ListItem item={item} />;
+            }}
+          />
+        </SafeAreaView>
+      </View>
+      <View style={{height: 210, borderColor: '#CBCBD4', borderBottomWidth: 1}}>
+        <View style={styles.bar}>
+          <Text style={styles.category}>연극</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('More', {category: 'stage'})}>
             <Text>></Text>
-          </View>
-          <SafeAreaView>
-            <SectionList
-              contentContainerStyle={{paddingHorizontal: 5}}
-              stickySectionHeadersEnabled={false}
-              sections={pList}
-              renderSectionHeader={({section}) => (
-                <>
-                  {section.horizontal ? (
-                    <FlatList
-                      horizontal
-                      data={section.data}
-                      renderItem={({item}) => <ListItem item={item} />}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  ) : null}
-                </>
-              )}
-              renderItem={({item, section}) => {
-                if (section.horizontal) {
-                  return null;
-                }
-                return <ListItem item={item} />;
-              }}
-            />
-          </SafeAreaView>
+          </TouchableOpacity>
         </View>
-        <View style={{height: 210}}>
-          <View style={styles.bar}>
-            <Text style={styles.category}>콘서트</Text>
+        <SafeAreaView>
+          <SectionList
+            contentContainerStyle={{paddingHorizontal: 5}}
+            stickySectionHeadersEnabled={false}
+            sections={pList}
+            renderSectionHeader={({section}) => (
+              <>
+                {section.horizontal ? (
+                  <FlatList
+                    horizontal
+                    data={section.data}
+                    renderItem={({item}) => <ListItem item={item} />}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                ) : null}
+              </>
+            )}
+            renderItem={({item, section}) => {
+              if (section.horizontal) {
+                return null;
+              }
+              return <ListItem item={item} />;
+            }}
+          />
+        </SafeAreaView>
+      </View>
+      <View style={{height: 210}}>
+        <View style={styles.bar}>
+          <Text style={styles.category}>콘서트</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('More', {category: 'concert'})}>
             <Text>></Text>
-          </View>
-          <SafeAreaView>
-            <SectionList
-              contentContainerStyle={{paddingHorizontal: 5}}
-              stickySectionHeadersEnabled={false}
-              sections={cList}
-              renderSectionHeader={({section}) => (
-                <>
-                  {section.horizontal ? (
-                    <FlatList
-                      horizontal
-                      data={section.data}
-                      renderItem={({item}) => <ListItem item={item} />}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  ) : null}
-                </>
-              )}
-              renderItem={({item, section}) => {
-                if (section.horizontal) {
-                  return null;
-                }
-                return <ListItem item={item} />;
-              }}
-            />
-          </SafeAreaView>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+        <SafeAreaView>
+          <SectionList
+            contentContainerStyle={{paddingHorizontal: 5}}
+            stickySectionHeadersEnabled={false}
+            sections={cList}
+            renderSectionHeader={({section}) => (
+              <>
+                {section.horizontal ? (
+                  <FlatList
+                    horizontal
+                    data={section.data}
+                    renderItem={({item}) => <ListItem item={item} />}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                ) : null}
+              </>
+            )}
+            renderItem={({item, section}) => {
+              if (section.horizontal) {
+                return null;
+              }
+              return <ListItem item={item} />;
+            }}
+          />
+        </SafeAreaView>
+      </View>
     </View>
   );
 };
