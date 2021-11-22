@@ -6,8 +6,12 @@ import {Rating} from 'react-native-ratings';
 const AddStars = ({navigation, route}) => {
   const textData = route.params;
   const [stars, setStars] = useState(0);
+
+  console.log('=======================[AddStars]======================');
+
   const ratingCompleted = rating => {
     setStars(rating);
+    console.log('Rating is: ' + rating);
     console.log('Rating is: ' + stars);
   };
   return (

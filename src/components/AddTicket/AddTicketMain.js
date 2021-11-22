@@ -17,34 +17,40 @@ const AddTicketMain = ({navigation}) => {
   const [photoData, setPhotoData] = useState('');
   const [textData, setTextData] = useState('');
 
+  console.log('======================[AddTicketMain]===================');
   const takePhoto = async () => {
+    let data = '';
     if (cameraRef) {
-      const data = await cameraRef.current.takePictureAsync({
+      data = await cameraRef.current.takePictureAsync({
         quality: 1,
         exif: true,
       });
-      console.log('data', data);
+      console.log('data: ', data);
       setPhotoData(data);
     }
+
     const fd = new FormData();
     fd.append('image', {
       name: 'picture.jpg',
       type: 'image/jpeg',
-      uri: photoData.uri,
+      uri: data.uri,
     });
-    const response = await fetch(preURL.preURL + '/image/name', {
+    await fetch(preURL.preURL + '/v1/ticket/image', {
       method: 'POST',
       body: fd,
       headers: {
         'content-type': 'multipart/form-data',
       },
     })
-      .post(preURL.preURL + '/ticket/post', photoData)
       .then(response => {
-        console.log(response);
+        console.log('response: ', response);
         setTextData(response);
         Alert.alert('티켓 정보를 확인해주세요', textData, [
-          {text: '확인', onPress: () => navigation.navigate('AddStars')},
+          {
+            text: '확인',
+            onPress: () =>
+              navigation.navigate('AddStars', {textData: textData}),
+          },
           {
             text: '다시 시도',
             onPress: () => {
