@@ -1,10 +1,17 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import {SafeAreaView, TextInput, StyleSheet, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  TextInput,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {preURL} from '../../constants/preURL';
 
-const Search = () => {
+const Search = ({navigation}) => {
   const [data, setData] = useState([]);
   const [keyword, setKeyword] = useState('');
 
@@ -22,9 +29,14 @@ const Search = () => {
   };
 
   const listItems = data.map(result => (
-    <Text style={{borderBottomColor: 'gray', borderBottomWidth: 0.5}}>
-      {result.title}
-    </Text>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Detail', {playid: result.playnum});
+      }}>
+      <Text style={{borderBottomColor: 'gray', borderBottomWidth: 0.5}}>
+        {result.title}
+      </Text>
+    </TouchableOpacity>
   ));
 
   return (
