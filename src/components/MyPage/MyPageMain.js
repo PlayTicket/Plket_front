@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const MyPageMain = ({navigation}) => {
   const [data, setData] = useState({});
+  const [nickName, setNickName] = useState({});
+  const [email, setEmail] = useState({});
 
   // play data
   let [mData, setMData] = useState([]);
@@ -34,6 +36,8 @@ const MyPageMain = ({navigation}) => {
         console.log('res.data: ', res.data);
         setData(res.data);
         console.log('data: ', data);
+        setNickName(res.data.nickname);
+        setEmail(res.data.email);
         if (res.data.musical.length != 0) {
           setMData(res.data.musical);
           console.log('mData: ', mData);
@@ -61,9 +65,19 @@ const MyPageMain = ({navigation}) => {
 
   const ListItem = arr => {
     console.log('arr: ', arr);
-    arr.map(play => (
-      <View>
-        <Text>되냐</Text>
+    return arr.map(play => (
+      <View style={{margin: 10}}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Detail', {playid: play.playid})}>
+          <Image
+            source={{uri: `${play.uri}`}}
+            style={{width: 100, height: 134}}
+          />
+          <View style={{display: 'flex', flexDirection: 'row'}}>
+            <Text>{play.title}</Text>
+            <Text>{play.star}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     ));
   };
@@ -82,11 +96,11 @@ const MyPageMain = ({navigation}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <View>
-          <Text style={{fontSize: 18}}></Text>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={{fontSize: 18}}>{nickName}</Text>
           <Text style={{fontSize: 18}}> 님</Text>
         </View>
-        <Text style={{fontSize: 14}}></Text>
+        <Text style={{fontSize: 14}}>{email}</Text>
       </View>
       <View style={{paddingLeft: 20, paddingRight: 20}}>
         <View
@@ -105,7 +119,7 @@ const MyPageMain = ({navigation}) => {
         {isM == true ? (
           <View style={styles.categoryBlock}>
             <Text style={styles.category}>뮤지컬</Text>
-            <View>{ListItem(mData)}</View>
+            <View style={styles.listBlock}>{ListItem(mData)}</View>
           </View>
         ) : (
           <View></View>
@@ -113,7 +127,7 @@ const MyPageMain = ({navigation}) => {
         {isS == true ? (
           <View style={styles.categoryBlock}>
             <Text style={styles.category}>연극</Text>
-            <View>{ListItem(sData)}</View>
+            <View style={styles.listBlock}>{ListItem(sData)}</View>
           </View>
         ) : (
           <View></View>
@@ -121,7 +135,7 @@ const MyPageMain = ({navigation}) => {
         {isC == true ? (
           <View style={styles.categoryBlock}>
             <Text style={styles.category}>콘서트</Text>
-            <View>{ListItem(cData)}</View>
+            <View style={styles.listBlock}>{ListItem(cData)}</View>
           </View>
         ) : (
           <View></View>
@@ -141,4 +155,8 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   category: {fontSize: 15},
+  listBlock: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 });
