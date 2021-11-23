@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {preURL} from '../../constants/preURL';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const HomeMain = ({navigation}) => {
   const [mList, setMList] = useState('');
@@ -86,8 +87,16 @@ const HomeMain = ({navigation}) => {
       <View style={{height: 75}}>
         <ImageBackground
           style={{height: 75, width: '100%'}}
-          source={require('../../assets/Header.png')}
-        />
+          source={require('../../assets/Header.png')}>
+          <Icon
+            size={35}
+            color="#001A72"
+            name="search"
+            onPress={() => {
+              navigation.navigate('Search');
+            }}
+          />
+        </ImageBackground>
       </View>
       <View
         style={{

@@ -27,6 +27,7 @@ const Detail = ({navigation, route}) => {
       .then(res => {
         console.log('공연 세부 정보 받았다! ');
         setInfo(res.data);
+        setScrap(scrap);
       })
       .catch(err => {
         console.log('에러 발생: ', err);
