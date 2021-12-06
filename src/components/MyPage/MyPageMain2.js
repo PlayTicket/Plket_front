@@ -11,7 +11,7 @@ import {
 import {preURL} from '../../constants/preURL';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const MyPageMain = ({navigation}) => {
+const MyPageMain2 = ({navigation}) => {
   const [data, setData] = useState({});
   const [nickName, setNickName] = useState({});
   const [email, setEmail] = useState({});
@@ -102,6 +102,7 @@ const MyPageMain = ({navigation}) => {
         </View>
         <Text style={{fontSize: 14}}>{email}</Text>
       </View>
+      <View></View>
       <View style={{paddingLeft: 20, paddingRight: 20}}>
         <View
           style={{
@@ -113,29 +114,41 @@ const MyPageMain = ({navigation}) => {
             borderBottomWidth: 0.5,
             paddingBottom: 10,
           }}>
-          <Icon size={35} color="#000000" name="like2" />
-          <Text style={{fontSize: 18, marginLeft: 10}}>나의 취향 분석</Text>
+          <Icon size={35} color="#000000" name="staro" />
+          <Text style={{fontSize: 18, marginLeft: 10}}>내가 찜한 공연</Text>
         </View>
+        {isM == true ? (
+          <View style={styles.categoryBlock}>
+            <Text style={styles.category}>뮤지컬</Text>
+            <View style={styles.listBlock}>{ListItem(mData)}</View>
+          </View>
+        ) : (
+          <View></View>
+        )}
+        {isS == true ? (
+          <View style={styles.categoryBlock}>
+            <Text style={styles.category}>연극</Text>
+            <View style={styles.listBlock}>{ListItem(sData)}</View>
+          </View>
+        ) : (
+          <View></View>
+        )}
+        {isC == true ? (
+          <View style={styles.categoryBlock}>
+            <Text style={styles.category}>콘서트</Text>
+            <View style={styles.listBlock}>{ListItem(cData)}</View>
+          </View>
+        ) : (
+          <View></View>
+        )}
       </View>
       <View
         style={{position: 'absolute', bottom: '0%', right: '0%', margin: 15}}>
         <Icon
           size={35}
-          color="#001A72"
-          name="like2"
-          style={{
-            borderColor: '#001A72',
-            borderWidth: 1,
-            padding: 10,
-            margin: 5,
-            borderRadius: 50,
-          }}
-        />
-        <Icon
-          size={35}
           color="#ffffff"
-          name="staro"
-          onPress={() => navigation.navigate('MyPageMain2')}
+          name="like2"
+          onPress={() => navigation.navigate('MyPageMain')}
           style={{
             backgroundColor: '#001A72',
             borderColor: '#001A72',
@@ -145,12 +158,26 @@ const MyPageMain = ({navigation}) => {
             borderRadius: 50,
           }}
         />
+
+        <Icon
+          size={35}
+          color="#001A72"
+          name="staro"
+          style={{
+            borderColor: '#001A72',
+            borderWidth: 1,
+            padding: 10,
+            marginRight: 5,
+            marginLeft: 5,
+            borderRadius: 50,
+          }}
+        />
       </View>
     </SafeAreaView>
   );
 };
 
-export default MyPageMain;
+export default MyPageMain2;
 
 const styles = StyleSheet.create({
   categoryBlock: {
