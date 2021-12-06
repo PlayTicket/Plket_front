@@ -6,6 +6,8 @@ import {
   Modal,
   StyleSheet,
   Alert,
+  Dimensions,
+  useWindowDimensions,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {COLORS} from '../../styles/Colors';
@@ -16,6 +18,8 @@ const AddTicketMain = ({navigation}) => {
   const cameraRef = React.useRef(null); // useRef로 camera를 위한 ref를 하나 만들어주고
   const [photoData, setPhotoData] = useState('');
   const [textData, setTextData] = useState('');
+
+  const {height, width} = useWindowDimensions();
 
   console.log('======================[AddTicketMain]===================');
   const takePhoto = async () => {
@@ -42,9 +46,9 @@ const AddTicketMain = ({navigation}) => {
         'content-type': 'multipart/form-data',
       },
     })
-      .then(response => {
-        console.log('response: ', response);
-        setTextData(response);
+      .then(res => {
+        console.log('res: ', res);
+        setTextData(res);
         Alert.alert('티켓 정보를 확인해주세요', textData, [
           {
             text: '확인',
@@ -65,14 +69,19 @@ const AddTicketMain = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, display: 'flex', alignItems: 'center'}}>
+    <View
+      style={{
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
       <Text>AddTicketMain</Text>
       <RNCamera
         ref={cameraRef}
         style={{
-          margin: '3%',
-          width: '100%',
-          height: '90%',
+          width: width,
+          height: width,
         }}
         captureAudio={false}
       />
