@@ -8,14 +8,14 @@ const StartStack = createStackNavigator();
 
 const Start = () => {
   return (
-    <StartStack.Navigator>
+    <StartStack.Navigator initialRouteName={'StartMain'}>
       <StartStack.Screen
         name="StartMain"
         component={StartMain}
         options={{headerShown: false}}
       />
       <StartStack.Screen
-        name="Nickname"
+        name="NickName"
         component={NickName}
         options={{headerShown: false}}
       />

@@ -21,11 +21,11 @@ const App = () => {
         screenOptions={{
           headerShown: false,
         }}>
-        {/* <MainStack.Screen
+        <MainStack.Screen
           name="StartScreen"
           component={Start}
           options={{headerShown: false}}
-        /> */}
+        />
         <MainStack.Screen
           name="NavTabs"
           component={NavTabs}
