@@ -18,6 +18,7 @@ const AddTicketMain = ({navigation}) => {
   const cameraRef = React.useRef(null); // useRef로 camera를 위한 ref를 하나 만들어주고
   const [photoData, setPhotoData] = useState('');
   const [textData, setTextData] = useState('');
+  const [uri, setURI] = useState('');
 
   const {height, width} = useWindowDimensions();
 
@@ -31,6 +32,7 @@ const AddTicketMain = ({navigation}) => {
       });
       console.log('data: ', data);
       setPhotoData(data);
+      setURI(data.uri);
     }
 
     const fd = new FormData();
@@ -46,14 +48,18 @@ const AddTicketMain = ({navigation}) => {
         'content-type': 'multipart/form-data',
       },
     })
-      .then(res => {
-        console.log('res: ', res);
-        setTextData(res);
-        Alert.alert('티켓 정보를 확인해주세요', textData, [
+      .then(response => response.json())
+      .then(json => {
+        console.log('응답 받았다! ', json);
+        setTextData(json);
+        Alert.alert('티켓 정보를 확인해주세요', '', [
           {
             text: '확인',
             onPress: () =>
-              navigation.navigate('AddStars', {textData: textData}),
+              navigation.navigate('ChooseInfo', {
+                textData: json,
+                uri: data.uri,
+              }),
           },
           {
             text: '다시 시도',

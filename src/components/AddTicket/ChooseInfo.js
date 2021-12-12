@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -6,29 +7,32 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import {preURL} from '../../constants/preURL';
 
 const ChooseInfo = ({navigation, route}) => {
-  //   const textData = route.params;
-  const [info, setInfo] = useState('제목');
-  const [pageNum, setPageNum] = useState(1);
+  const textData = route.params.textData;
+  const titles = textData.title;
+  const uri = route.params.uri;
   const [tSelection, setTSelection] = useState('');
-  const [dSelection, setDSelection] = useState('');
-  const [pSelection, setPSelection] = useState('');
-  const [sSelection, setSSelection] = useState('');
+  const [answer, setAnswer] = useState({});
 
-  // 임시 data
-  const textData = [
-    '다윈영의 악의기원',
-    'Prime School',
-    '2021-10-12 (화) 19:00',
-    '예술의전당 CJ 토월극장',
-    '1층 A블록 10열 11번',
-    '제작 : (재)서울예술단',
-    '후원 : 문화체육관광부',
-    '문의 : 클립서비스 1577-3363',
-  ];
-
-  console.log(textData);
+  // // 임시 data
+  // const textData = [
+  //   '다윈영의 악의기원',
+  //   'Prime School',
+  //   '2021-10-12 (화) 19:00',
+  //   '예술의전당 CJ 토월극장',
+  //   '1층 A블록 10열 11번',
+  //   '제작 : (재)서울예술단',
+  //   '후원 : 문화체육관광부',
+  //   '문의 : 클립서비스 1577-3363',
+  // ];
+  useEffect(() => {
+    console.log('========================[ChooseInfo]====================');
+    console.log('textData: ', textData);
+    console.log('titles: ', titles);
+    console.log('uri: ', uri);
+  }, []);
 
   const TListItem = arr => {
     console.log('arr: ', arr);
@@ -48,135 +52,38 @@ const ChooseInfo = ({navigation, route}) => {
     ));
   };
 
-  const DListItem = arr => {
-    console.log('arr: ', arr);
-    return arr.map(li => (
-      <TouchableOpacity onPress={() => setDSelection(li)}>
-        <View
-          style={{
-            borderColor: 'gray',
-            borderWidth: 1,
-            padding: 10,
-            marginTop: 5,
-            marginBottom: 5,
-          }}>
-          <Text style={{fontSize: 15}}>{li}</Text>
-        </View>
-      </TouchableOpacity>
-    ));
-  };
-
-  const PListItem = arr => {
-    console.log('arr: ', arr);
-    return arr.map(li => (
-      <TouchableOpacity onPress={() => setPSelection(li)}>
-        <View
-          style={{
-            borderColor: 'gray',
-            borderWidth: 1,
-            padding: 10,
-            marginTop: 5,
-            marginBottom: 5,
-          }}>
-          <Text style={{fontSize: 15}}>{li}</Text>
-        </View>
-      </TouchableOpacity>
-    ));
-  };
-  const SListItem = arr => {
-    console.log('arr: ', arr);
-    return arr.map(li => (
-      <TouchableOpacity onPress={() => setSSelection(li)}>
-        <View
-          style={{
-            borderColor: 'gray',
-            borderWidth: 1,
-            padding: 10,
-            marginTop: 5,
-            marginBottom: 5,
-          }}>
-          <Text style={{fontSize: 15}}>{li}</Text>
-        </View>
-      </TouchableOpacity>
-    ));
+  const postSelection = () => {
+    console.log('tSelection: ', tSelection);
+    const body = {
+      title: `${tSelection}`,
+      place: `${textData.place}`,
+      seat: `${textData.seat}`,
+      date: `${textData.date}`,
+      imguri: `${uri}`,
+    };
+    axios
+      .post(preURL.preURL + '/v1/ticket/answer', body)
+      .then(res => {
+        console.log('선택 보냈다! ', res);
+        setAnswer(res);
+      })
+      .catch(err => {
+        console.log('에러 발생❗️ ', err);
+      });
   };
 
   return (
     <SafeAreaView style={{padding: 20}}>
       <View>
-        {pageNum == 1 ? (
-          <Text style={styles.ques}>제목을 선택해주세요</Text>
-        ) : pageNum == 2 ? (
-          <Text style={styles.ques}>일시를 선택해주세요</Text>
-        ) : pageNum == 3 ? (
-          <Text style={styles.ques}>장소를 선택해주세요</Text>
-        ) : pageNum == 4 ? (
-          <Text style={styles.ques}>좌석을 선택해주세요</Text>
-        ) : (
-          <Text></Text>
-        )}
-        <Text>{pageNum}/4</Text>
+        <Text style={styles.ques}>제목을 선택해주세요</Text>
       </View>
-      {pageNum == 1 ? (
-        <View>
-          <TouchableOpacity onPress={setPageNum(pageNum + 1)}>
-            <Text>다음</Text>
-          </TouchableOpacity>
-          <Text>{tSelection}</Text>
-          <View>{TListItem(textData)}</View>
-        </View>
-      ) : pageNum == 2 ? (
-        <View>
-          <TouchableOpacity onPress={() => setPageNum(1)}>
-            <Text>이전</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setPageNum(pageNum + 1)}>
-            <Text>다음</Text>
-          </TouchableOpacity>
-          <Text>{tSelection}</Text>
-          <Text>{dSelection}</Text>
-
-          <View>{DListItem(textData)}</View>
-        </View>
-      ) : pageNum == 3 ? (
-        <View>
-          <TouchableOpacity onPress={() => setPageNum(pageNum - 1)}>
-            <Text>이전</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setPageNum(pageNum + 1)}>
-            <Text>다음</Text>
-          </TouchableOpacity>
-          <Text>{tSelection}</Text>
-          <Text>{dSelection}</Text>
-          <Text>{pSelection}</Text>
-          <View>{PListItem(textData)}</View>
-        </View>
-      ) : pageNum == 4 ? (
-        <View>
-          <TouchableOpacity onPress={() => setPageNum(pageNum - 1)}>
-            <Text>이전</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('AddStars', {
-                title: tSelection,
-                date: dSelection,
-                place: pSelection,
-                seat: sSelection,
-              })
-            }>
-            <Text>다음</Text>
-          </TouchableOpacity>
-          <Text>{tSelection}</Text>
-          <Text>{dSelection}</Text>
-          <Text>{pSelection}</Text>
-          <Text>{sSelection}</Text>
-          <View>{SListItem(textData)}</View>
-        </View>
-      ) : (
-        <View></View>
-      )}
-      <View></View>
+      <View>
+        <TouchableOpacity onPress={() => postSelection()}>
+          <Text>다음</Text>
+        </TouchableOpacity>
+        <Text>{tSelection}</Text>
+        <View>{TListItem(titles)}</View>
+      </View>
     </SafeAreaView>
   );
 };
