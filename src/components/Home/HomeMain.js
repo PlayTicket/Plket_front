@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import {preURL} from '../../constants/preURL';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Header from '../etc/Header';
 
 const HomeMain = ({navigation}) => {
   const [mList, setMList] = useState('');
@@ -84,31 +85,13 @@ const HomeMain = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={{height: 75}}>
-        <ImageBackground
-          style={{height: 75, width: '100%'}}
-          source={require('../../assets/Header.png')}>
-          <Icon
-            size={35}
-            color="#001A72"
-            name="search"
-            onPress={() => {
-              navigation.navigate('Search');
-            }}
-          />
-        </ImageBackground>
-      </View>
-      <View
-        style={{
-          height: 210,
-          borderColor: '#CBCBD4',
-          borderBottomWidth: 1,
-        }}>
+      <Header />
+      <View style={styles.block}>
         <View style={styles.bar}>
           <Text style={styles.category}>뮤지컬</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('More', {category: 'musical'})}>
-            <Text>></Text>
+            <Icon size={27} name="chevron-forward-sharp" />
           </TouchableOpacity>
         </View>
         <SafeAreaView>
@@ -137,12 +120,12 @@ const HomeMain = ({navigation}) => {
           />
         </SafeAreaView>
       </View>
-      <View style={{height: 210, borderColor: '#CBCBD4', borderBottomWidth: 1}}>
+      <View style={styles.block}>
         <View style={styles.bar}>
           <Text style={styles.category}>연극</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('More', {category: 'stage'})}>
-            <Text>></Text>
+            <Icon size={27} name="chevron-forward-sharp" />
           </TouchableOpacity>
         </View>
         <SafeAreaView>
@@ -171,12 +154,12 @@ const HomeMain = ({navigation}) => {
           />
         </SafeAreaView>
       </View>
-      <View style={{height: 210}}>
+      <View style={styles.block}>
         <View style={styles.bar}>
           <Text style={styles.category}>콘서트</Text>
           <TouchableOpacity
             onPress={() => navigation.navigate('More', {category: 'concert'})}>
-            <Text>></Text>
+            <Icon size={27} name="chevron-forward-sharp" />
           </TouchableOpacity>
         </View>
         <SafeAreaView>
@@ -211,35 +194,14 @@ const HomeMain = ({navigation}) => {
 
 export default HomeMain;
 
-const SECTIONS1 = [
-  {
-    title: 'Made for you',
-    horizontal: true,
-    data: [
-      {
-        title: '앗, 도와줘!',
-        uri: 'https://picsum.photos/id/1/200',
-        route: 'StoryLoading',
-        star: '3',
-      },
-      {
-        title: '마리모 친구들',
-        uri: 'https://picsum.photos/id/10/200',
-        route: 'StoryLoading',
-        star: '3',
-      },
-
-      {
-        title: 'Item text 3',
-        uri: 'https://picsum.photos/id/1002/200',
-        route: 'StoryLoading',
-        star: '3',
-      },
-    ],
-  },
-];
-
 const styles = StyleSheet.create({
+  block: {
+    height: '29%',
+    borderColor: '#CBCBD4',
+    borderBottomWidth: 1,
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
   bar: {
     display: 'flex',
     flexDirection: 'row',
@@ -249,7 +211,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     color: 'black',
   },
-  category: {color: 'black', fontSize: 15},
+  category: {color: 'black', fontSize: 16, fontWeight: 'bold'},
   item: {
     width: '100%',
     display: 'flex',
