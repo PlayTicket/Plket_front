@@ -59,7 +59,7 @@ const StartMain = ({navigation}) => {
     AsyncStorage.getItem('naverToken');
     AsyncStorage.getItem('userID', (err, result) => {
       console.log('userID: ', result);
-      setID(id);
+      setID(result);
     });
   }, []);
 
