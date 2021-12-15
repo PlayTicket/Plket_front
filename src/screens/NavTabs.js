@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Home from './HomeScreen';
@@ -7,6 +7,7 @@ import MyTicket from './MyTicketScreen';
 import AddTicket from './AddTicketScreen';
 import Seat from './SeatScreen';
 import MyPage from './MyPageScreen';
+import Icon from 'react-native-vector-icons/Fontisto';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +31,20 @@ const NavTabs = () => {
         component={Home}
         options={{
           tabBarIcon: ({focused}) => (
-            <View>
-              <Text>홈</Text>
+            <View style={styles.container}>
+              <Icon
+                size={27}
+                color={focused ? '#2B266B' : '#9593B5'}
+                name="home"
+              />
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: focused ? '#2B266B' : '#9593B5',
+                  fontWeight: focused ? 'bold' : 'normal',
+                }}>
+                홈
+              </Text>
             </View>
           ),
           unmountOnBlur: true,
@@ -42,8 +55,20 @@ const NavTabs = () => {
         component={MyTicket}
         options={{
           tabBarIcon: ({focused}) => (
-            <View>
-              <Text>나의 티켓</Text>
+            <View style={styles.container}>
+              <Icon
+                size={27}
+                color={focused ? '#2B266B' : '#9593B5'}
+                name="ticket"
+              />
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: focused ? '#2B266B' : '#9593B5',
+                  fontWeight: focused ? 'bold' : 'normal',
+                }}>
+                나의 티켓
+              </Text>
             </View>
           ),
           unmountOnBlur: true,
@@ -54,8 +79,20 @@ const NavTabs = () => {
         component={AddTicket}
         options={{
           tabBarIcon: ({focused}) => (
-            <View>
-              <Text>티켓 추가</Text>
+            <View style={styles.container}>
+              <Icon
+                size={27}
+                color={focused ? '#2B266B' : '#9593B5'}
+                name="plus-a"
+              />
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: focused ? '#2B266B' : '#9593B5',
+                  fontWeight: focused ? 'bold' : 'normal',
+                }}>
+                타켓 추가
+              </Text>
             </View>
           ),
           unmountOnBlur: true,
@@ -66,8 +103,20 @@ const NavTabs = () => {
         component={Seat}
         options={{
           tabBarIcon: ({focused}) => (
-            <View>
-              <Text>좌석</Text>
+            <View style={styles.container}>
+              <Icon
+                size={27}
+                color={focused ? '#2B266B' : '#9593B5'}
+                name="persons"
+              />
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: focused ? '#2B266B' : '#9593B5',
+                  fontWeight: focused ? 'bold' : 'normal',
+                }}>
+                좌석
+              </Text>
             </View>
           ),
           unmountOnBlur: true,
@@ -78,8 +127,20 @@ const NavTabs = () => {
         component={MyPage}
         options={{
           tabBarIcon: ({focused}) => (
-            <View>
-              <Text>마이 페이지</Text>
+            <View style={styles.container}>
+              <Icon
+                size={27}
+                color={focused ? '#2B266B' : '#9593B5'}
+                name="person"
+              />
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: focused ? '#2B266B' : '#9593B5',
+                  fontWeight: focused ? 'bold' : 'normal',
+                }}>
+                마이페이지
+              </Text>
             </View>
           ),
           unmountOnBlur: true,
@@ -90,3 +151,14 @@ const NavTabs = () => {
 };
 
 export default NavTabs;
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icons: {
+    width: 50,
+    height: 50,
+  },
+});
