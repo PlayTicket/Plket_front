@@ -56,7 +56,7 @@ const NickName = ({navigation, route}) => {
       <Text style={{fontSize: 20, marginBottom: '1%'}}>
         감상평을 기록해볼까요?
       </Text>
-      <Text style={{fontSize: 18}}>닉네임 입력</Text>
+      <Text style={{fontSize: 18}}>닉네임을 입력해주세요</Text>
       <TextInput
         style={{
           borderBottomColor: '#000',
@@ -70,20 +70,24 @@ const NickName = ({navigation, route}) => {
           console.log('닉네임: ', nickName);
         }}
       />
-      <TouchableOpacity
-        onPress={() => postNickname()}
-        style={{
-          marginTop: '15%',
-          backgroundColor: COLORS.navy,
-          height: '12%',
-          width: '100%',
-          borderRadius: 15,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontSize: 20, color: 'white'}}>시작하기</Text>
-      </TouchableOpacity>
+      {nickName != '' ? (
+        <TouchableOpacity
+          onPress={() => postNickname()}
+          style={{
+            marginTop: '15%',
+            backgroundColor: COLORS.navy,
+            height: '10%',
+            width: '100%',
+            borderRadius: 15,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 20, color: 'white'}}>시작하기</Text>
+        </TouchableOpacity>
+      ) : (
+        <View></View>
+      )}
     </View>
   );
 };
