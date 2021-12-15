@@ -13,12 +13,14 @@ import {RNCamera} from 'react-native-camera';
 import axios from 'axios';
 import {preURL} from '../../constants/preURL';
 import {COLORS} from '../../styles/Colors';
+import Header from '../etc/Header';
 
 const AddTicketMain = ({navigation}) => {
   const cameraRef = React.useRef(null); // useRef로 camera를 위한 ref를 하나 만들어주고
   const [photoData, setPhotoData] = useState('');
   const [textData, setTextData] = useState('');
   const [uri, setURI] = useState('');
+  const [photoTaken, setPhotoTaken] = useState(false);
 
   const {height, width} = useWindowDimensions();
 
@@ -32,6 +34,7 @@ const AddTicketMain = ({navigation}) => {
       });
       console.log('data: ', data);
       setPhotoData(data);
+      setPhotoTaken(true);
       setURI(data.uri);
     }
 
@@ -80,25 +83,35 @@ const AddTicketMain = ({navigation}) => {
         height: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
       }}>
-      <Text>작은 절취용 티켓을 제외하고 찍어주세요</Text>
-      <RNCamera
-        ref={cameraRef}
-        style={{
-          width: width,
-          height: width,
-        }}
-        captureAudio={false}
-      />
+      <Header />
+      {photoTaken ? (
+        <Text style={{fontSize: 16, marginTop: '20%'}}>
+          잠시만 기다려주세요
+        </Text>
+      ) : (
+        <Text style={{fontSize: 16, marginTop: '20%'}}>
+          작은 절취용 티켓을 제외하고 찍어주세요
+        </Text>
+      )}
+      <View style={{height: '50%', overflow: 'hidden', marginTop: '3%'}}>
+        <RNCamera
+          ref={cameraRef}
+          style={{
+            width: width,
+            height: '30%',
+          }}
+          captureAudio={false}
+        />
+      </View>
       <View>
         <TouchableOpacity
           onPress={takePhoto}
           style={{
-            width: 100,
-            height: 100,
+            width: '20%',
+            aspectRatio: 1,
             backgroundColor: COLORS.navy,
-            borderRadius: 50,
+            borderRadius: 100,
             opacity: 0.5,
           }}
         />

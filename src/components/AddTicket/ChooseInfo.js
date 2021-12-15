@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {preURL} from '../../constants/preURL';
+import Header from '../etc/Header';
 
 const ChooseInfo = ({navigation, route}) => {
   const textData = route.params.textData;
@@ -16,17 +17,6 @@ const ChooseInfo = ({navigation, route}) => {
   const [tSelection, setTSelection] = useState('');
   const [answer, setAnswer] = useState({});
 
-  // // 임시 data
-  // const textData = [
-  //   '다윈영의 악의기원',
-  //   'Prime School',
-  //   '2021-10-12 (화) 19:00',
-  //   '예술의전당 CJ 토월극장',
-  //   '1층 A블록 10열 11번',
-  //   '제작 : (재)서울예술단',
-  //   '후원 : 문화체육관광부',
-  //   '문의 : 클립서비스 1577-3363',
-  // ];
   useEffect(() => {
     console.log('========================[ChooseInfo]====================');
     console.log('textData: ', textData);
@@ -40,13 +30,17 @@ const ChooseInfo = ({navigation, route}) => {
       <TouchableOpacity onPress={() => setTSelection(li)}>
         <View
           style={{
-            borderColor: 'gray',
-            borderWidth: 1,
-            padding: 10,
+            borderColor: '#001A72',
+            borderWidth: 2,
+            height: 100,
             marginTop: 5,
             marginBottom: 5,
+            borderRadius: 15,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          <Text style={{fontSize: 15}}>{li}</Text>
+          <Text style={{fontSize: 18}}>{li}</Text>
         </View>
       </TouchableOpacity>
     ));
@@ -71,20 +65,37 @@ const ChooseInfo = ({navigation, route}) => {
       .catch(err => {
         console.log('에러 발생❗️ ', err);
       });
-    navigation.navigate('AddStars', {info: body});
+    navigation.navigate('AddStars', {info: body, ticketID: answer});
   };
 
   return (
-    <SafeAreaView style={{padding: 20}}>
-      <View>
-        <Text style={styles.ques}>제목을 선택해주세요</Text>
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => postSelection()}>
-          <Text>다음</Text>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <Header />
+      <View style={{padding: 20}}>
+        <View>
+          <Text style={styles.ques}>제목을 선택해주세요</Text>
+        </View>
+        <View>
+          <Text style={{marginTop: '2%', marginBottom: '2%', fontSize: 17}}>
+            {tSelection}
+          </Text>
+          <View>{TListItem(titles)}</View>
+        </View>
+        <TouchableOpacity
+          onPress={() => postSelection()}
+          style={{
+            backgroundColor: '#001A72',
+            width: '100%',
+            height: '10%',
+            alignSelf: 'center',
+            marginTop: '5%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 15,
+          }}>
+          <Text style={{color: 'white', fontSize: 17}}>다음</Text>
         </TouchableOpacity>
-        <Text>{tSelection}</Text>
-        <View>{TListItem(titles)}</View>
       </View>
     </SafeAreaView>
   );
@@ -96,5 +107,6 @@ const styles = StyleSheet.create({
   ques: {
     fontSize: 18,
     fontWeight: 'bold',
+    marignBottom: 10,
   },
 });
