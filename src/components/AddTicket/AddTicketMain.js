@@ -10,9 +10,9 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
-import {COLORS} from '../../styles/Colors';
 import axios from 'axios';
 import {preURL} from '../../constants/preURL';
+import {COLORS} from '../../styles/Colors';
 
 const AddTicketMain = ({navigation}) => {
   const cameraRef = React.useRef(null); // useRef로 camera를 위한 ref를 하나 만들어주고
@@ -50,7 +50,7 @@ const AddTicketMain = ({navigation}) => {
     })
       .then(response => response.json())
       .then(json => {
-        console.log('응답 받았다! ', json);
+        console.log('티켓 정보 받았다! ', json);
         setTextData(json);
         Alert.alert('티켓 정보를 확인해주세요', '', [
           {
@@ -58,7 +58,7 @@ const AddTicketMain = ({navigation}) => {
             onPress: () =>
               navigation.navigate('ChooseInfo', {
                 textData: json,
-                uri: data.uri,
+                uri: json.imguri,
               }),
           },
           {
@@ -82,7 +82,7 @@ const AddTicketMain = ({navigation}) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <Text>AddTicketMain</Text>
+      <Text>작은 절취용 티켓을 제외하고 찍어주세요</Text>
       <RNCamera
         ref={cameraRef}
         style={{
@@ -92,9 +92,16 @@ const AddTicketMain = ({navigation}) => {
         captureAudio={false}
       />
       <View>
-        <TouchableOpacity onPress={takePhoto}>
-          <Text>찰칵</Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={takePhoto}
+          style={{
+            width: 100,
+            height: 100,
+            backgroundColor: COLORS.navy,
+            borderRadius: 50,
+            opacity: 0.5,
+          }}
+        />
       </View>
     </View>
   );

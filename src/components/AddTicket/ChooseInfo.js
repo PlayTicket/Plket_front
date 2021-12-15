@@ -61,15 +61,17 @@ const ChooseInfo = ({navigation, route}) => {
       date: `${textData.date}`,
       imguri: `${uri}`,
     };
+    console.log('body: ', body);
     axios
       .post(preURL.preURL + '/v1/ticket/answer', body)
       .then(res => {
-        console.log('선택 보냈다! ', res);
-        setAnswer(res);
+        console.log('선택 보냈다! ', res.data);
+        setAnswer(res.data);
       })
       .catch(err => {
         console.log('에러 발생❗️ ', err);
       });
+    navigation.navigate('AddStars', {info: body});
   };
 
   return (
