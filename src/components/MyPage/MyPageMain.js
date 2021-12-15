@@ -35,7 +35,7 @@ const MyPageMain = ({navigation}) => {
     getID();
 
     axios
-      .get(preURL.preURL + `/v1/user/${id}`)
+      .get(preURL.preURL + `/v1/user/1`) // 유저 아이디
       .then(res => {
         console.log('res.data: ', res.data);
         setNickName(res.data.nickname);

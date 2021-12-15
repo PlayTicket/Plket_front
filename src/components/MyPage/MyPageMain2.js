@@ -16,6 +16,7 @@ const MyPageMain2 = ({navigation}) => {
   const [data, setData] = useState({});
   const [nickName, setNickName] = useState({});
   const [email, setEmail] = useState({});
+  const [id, setID] = useState(0);
 
   // play data
   let [mData, setMData] = useState([]);
@@ -27,12 +28,25 @@ const MyPageMain2 = ({navigation}) => {
   const [isS, setIsS] = useState(false);
   const [isC, setIsC] = useState(false);
 
+  const getID = async () => {
+    try {
+      const value = await AsyncStorage.getItem('userID');
+      if (value !== null) {
+        console.log('ID: ', value);
+        setID(value);
+      }
+    } catch (error) {
+      console.log('ID 못 가져옴❗️ ', error);
+    }
+  };
+
   useEffect(() => {
     console.log('==================[MyPageMain]=====================');
     let Loading = false;
+    getID();
 
     axios
-      .get(preURL.preURL + `/v1/user/${id}`) // 유저 아이디
+      .get(preURL.preURL + `/v1/user/1`) // 유저 아이디
       .then(res => {
         console.log('res.data: ', res.data);
         setData(res.data);
