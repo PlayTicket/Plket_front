@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {preURL} from '../../constants/preURL';
 import Icon from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyPageMain2 = ({navigation}) => {
   const [data, setData] = useState({});
@@ -31,7 +32,7 @@ const MyPageMain2 = ({navigation}) => {
     let Loading = false;
 
     axios
-      .get(preURL.preURL + `/v1/user/1`) // 유저 아이디
+      .get(preURL.preURL + `/v1/user/${id}`) // 유저 아이디
       .then(res => {
         console.log('res.data: ', res.data);
         setData(res.data);
@@ -64,7 +65,6 @@ const MyPageMain2 = ({navigation}) => {
   }, []);
 
   const ListItem = arr => {
-    // console.log('arr: ', arr);
     return arr.map(play => (
       <View style={{margin: 10}}>
         <TouchableOpacity
@@ -91,16 +91,16 @@ const MyPageMain2 = ({navigation}) => {
         style={{
           width: '100%',
           height: 150,
-          backgroundColor: 'gray',
+          backgroundColor: 'rgba(30, 27, 75, 0.3)',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={{fontSize: 18}}>{nickName}</Text>
+          <Text style={{fontSize: 18}}>{nickName.toString()}</Text>
           <Text style={{fontSize: 18}}> 님</Text>
         </View>
-        <Text style={{fontSize: 14}}>{email}</Text>
+        <Text style={{fontSize: 14}}>{email.toString()}</Text>
       </View>
       <View></View>
       <View style={{paddingLeft: 20, paddingRight: 20}}>

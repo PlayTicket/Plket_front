@@ -10,77 +10,41 @@ import {
 } from 'react-native';
 import {preURL} from '../../constants/preURL';
 import Icon from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyPageMain = ({navigation}) => {
-  const [data, setData] = useState({});
   const [nickName, setNickName] = useState({});
   const [email, setEmail] = useState({});
 
-  // play data
-  let [mData, setMData] = useState([]);
-  let [sData, setSData] = useState([]);
-  let [cData, setCData] = useState([]);
+  const [id, setID] = useState(0);
 
-  // play data 유뮤
-  const [isM, setIsM] = useState(false);
-  const [isS, setIsS] = useState(false);
-  const [isC, setIsC] = useState(false);
+  const getID = async () => {
+    try {
+      const value = await AsyncStorage.getItem('userID');
+      if (value !== null) {
+        console.log('ID: ', value);
+        setID(value);
+      }
+    } catch (error) {
+      console.log('ID 못 가져옴❗️ ', error);
+    }
+  };
 
   useEffect(() => {
     console.log('==================[MyPageMain]=====================');
-    let Loading = false;
+    getID();
 
     axios
-      .get(preURL.preURL + `/v1/user/1`) // 유저 아이디
+      .get(preURL.preURL + `/v1/user/${id}`)
       .then(res => {
         console.log('res.data: ', res.data);
-        setData(res.data);
-        console.log('data: ', data);
         setNickName(res.data.nickname);
         setEmail(res.data.email);
-        if (res.data.musical.length != 0) {
-          setMData(res.data.musical);
-          console.log('mData: ', mData);
-          setIsM(!isM);
-        }
-        if (res.data.stage.length != 0) {
-          setSData(res.data.stage);
-          console.log('sData: ', sData);
-          setIsS(!isS);
-        }
-        if (res.data.concert.length != 0) {
-          setCData(res.data.concert);
-          console.log('cData: ', cData);
-          setIsC(!isC);
-        }
       })
       .catch(err => {
         console.log('에러 발생❗️ ', err);
       });
-
-    return () => {
-      let loading = true;
-    };
   }, []);
-
-  const ListItem = arr => {
-    // console.log('arr: ', arr);
-    return arr.map(play => (
-      <View style={{margin: 10}}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Detail', {playid: play.playid})}>
-          <Image
-            source={{uri: `${play.uri}`}}
-            style={{width: 100, height: 134}}
-          />
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text>{play.title}</Text>
-            <Text>{play.star}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    ));
-  };
 
   return (
     <SafeAreaView style={{height: '100%'}}>
@@ -91,16 +55,16 @@ const MyPageMain = ({navigation}) => {
         style={{
           width: '100%',
           height: 150,
-          backgroundColor: 'gray',
+          backgroundColor: 'rgba(30, 27, 75, 0.3)',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text style={{fontSize: 18}}>{nickName}</Text>
+          <Text style={{fontSize: 18}}>{nickName.toString()}</Text>
           <Text style={{fontSize: 18}}> 님</Text>
         </View>
-        <Text style={{fontSize: 14}}>{email}</Text>
+        <Text style={{fontSize: 14}}>{email.toString()}</Text>
       </View>
       <View style={{paddingLeft: 20, paddingRight: 20}}>
         <View
@@ -151,17 +115,3 @@ const MyPageMain = ({navigation}) => {
 };
 
 export default MyPageMain;
-
-const styles = StyleSheet.create({
-  categoryBlock: {
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  category: {fontSize: 15},
-  listBlock: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-});
