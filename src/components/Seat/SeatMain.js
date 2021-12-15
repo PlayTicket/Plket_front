@@ -1,17 +1,19 @@
 import axios from 'axios';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TouchableOpacity,
   ImageBackground,
   View,
+  FlatList,
   Text,
   SafeAreaView,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {preURL} from '../../constants/preURL';
+import Header from '../etc/Header';
 
 const SeatMain = ({navigation}) => {
-  // const [data, setData] = useState({});
+  const [data, setData] = useState({});
   // open
   const [placeOpen, setPlaceOpen] = useState(false);
   const [floorOpen, setFloorOpen] = useState(false);
@@ -21,7 +23,6 @@ const SeatMain = ({navigation}) => {
   const [plValue, setPlValue] = useState(null);
   const [paValue, setPaValue] = useState(null);
   const [flValue, setFlValue] = useState(null);
-  const [fValue, setFValue] = useState(null);
   // items
   const [plItems, setPlItems] = useState([
     {label: 'Apple', value: 'apple'},
@@ -35,10 +36,19 @@ const SeatMain = ({navigation}) => {
     {label: 'Apple', value: 'apple'},
     {label: 'Banana', value: 'banana'},
   ]);
-  const [fItems, setFItems] = useState([
-    {label: 'Apple', value: 'apple'},
-    {label: 'Banana', value: 'banana'},
-  ]);
+
+  const [id, setID] = useState(0);
+  const [result, setResult] = useState({});
+
+  const getID = async () => {
+    try {
+      const value = await AsyncStorage.getItem('userID');
+      if (value !== null) {
+        console.log('ID: ', value);
+        setID(value);
+      }
+    } catch (error) {}
+  };
 
   const onPlaceOpen =
     (() => {
@@ -58,47 +68,81 @@ const SeatMain = ({navigation}) => {
       setPartOpen(false);
     },
     []);
-  const onFilterOpen =
-    (() => {
-      setPlaceOpen(false);
-      setPartOpen(false);
-      setSeatOpen(false);
-    },
-    []);
 
-  // 임시
-  const data = {
-    nickName: '양파네모',
-    row: '3',
-    num: '6',
-    like: false,
-    article: '시야 방해 없음',
-    uri: ['', ''],
+  useEffect(() => {
+    getID();
+    axios
+      .get(preURL.preURL + `/v1/seat/lists`)
+      .then(res => {
+        console.log('응답: ', res.data);
+        setData(res.data);
+        console.log('data: ', data);
+      })
+      .catch(err => {
+        console.log('에러 발생❗️ - 검색 기준 ', err);
+      });
+  }, []);
+
+  let body = {
+    place: plValue,
+    floor: flValue,
+    block: paValue,
   };
 
-  axios
-    .get(preURL.preURL + '/v1/')
-    .then(res => {
-      console.log('응답: ', res.data);
-      setData(res.data);
-      console.log('data: ', data);
-    })
-    .catch(err => {
-      console.log('에러 발생❗️ ', err);
-    });
+  useEffect(() => {
+    if (plValue != null && (paValue != null) & (flValue != null)) {
+      axios
+        .post(preURL.preURL + '/v1/seat/search', body)
+        .then(res => {
+          console.log('검색 결과 받았다: ', res.data);
+          setResult(res.data);
+        })
+        .catch(err => console.log('에러 발생❗️ - 검색 결과 ', err));
+    }
+  }, [body]);
+
+  const imageList = arr => {
+    console.log('arr: ', arr);
+    return arr.map(li => (
+      <Image source={{uri: arr}} style={{width: 200, height: 200}} />
+    ));
+  };
+
+  const listItems = ({item}) => {
+    console.log('item(게시글): ', item);
+    return (
+      <View style={{borderColor: 'gray', borderWidth: 1}}>
+        <Text>{item.nickName} 님</Text>
+        <View>
+          <Text>{item.row}열</Text>
+          <Text>{item.num}번</Text>
+        </View>
+        <Text>{item.article}</Text>
+        {item.uri.length != 0 ? (
+          <View
+            style={{
+              padding: 10,
+              width: '90%',
+              backgroundColor: 'gray',
+              borderRadius: 15,
+            }}>
+            {imageList(item.uri)}
+          </View>
+        ) : (
+          <View></View>
+        )}
+      </View>
+    );
+  };
 
   return (
-    <SafeAreaView>
-      <ImageBackground
-        style={{height: 75, width: '100%'}}
-        source={require('../../assets/Header.png')}
-      />
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <Header />
       <View
         style={{
           margin: '3%',
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
         }}>
         <DropDownPicker
           placeholder={'장소'}
@@ -133,19 +177,8 @@ const SeatMain = ({navigation}) => {
           setItems={setPaItems}
           containerStyle={{height: 50, width: '21%'}}
         />
-
-        <DropDownPicker
-          placeholder={'필터'}
-          open={filterOpen}
-          onOpen={onFilterOpen}
-          value={fValue}
-          items={fItems}
-          setOpen={setFilterOpen}
-          setValue={setFValue}
-          setItems={setFItems}
-          containerStyle={{height: 50, width: '22%', marginLeft: '7%'}}
-        />
       </View>
+      <FlatList data={result} renderItem={listItems} />
     </SafeAreaView>
   );
 };
