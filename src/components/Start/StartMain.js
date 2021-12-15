@@ -27,6 +27,7 @@ const initials = Platform.OS === 'ios' ? iosKeys : androidKeys;
 
 const StartMain = ({navigation}) => {
   const [naverToken, setNaverToken] = React.useState(null);
+  const [id, setID] = React.useState(-1);
 
   console.log('======================[StartMain]=====================');
 
@@ -40,6 +41,7 @@ const StartMain = ({navigation}) => {
       console.log('pass token');
       return token;
     });
+    setLogin();
   };
 
   useEffect(async () => {
@@ -54,11 +56,14 @@ const StartMain = ({navigation}) => {
   };
 
   useEffect(() => {
-    AsyncStorage.getItem('naverToekn');
+    AsyncStorage.getItem('naverToken');
+    AsyncStorage.getItem('userID', (err, result) => {
+      console.log('userID: ', result);
+      setID(id);
+    });
   }, []);
 
   useEffect(() => {
-    console.log('naverToken', naverToken);
     if (naverToken !== null && AsyncStorage.getItem('isLogin') !== 'true') {
       getUserProfile();
     }
@@ -82,13 +87,7 @@ const StartMain = ({navigation}) => {
     const isLogin = await AsyncStorage.getItem('isLogin');
 
     if (isLogin === 'true') {
-      Alert.alert('어서오세요', [
-        {
-          text: '확인',
-          onPress: () => null,
-        },
-      ]);
-      navigation.navigate('NavTab');
+      navigation.navigate('NavTabs');
     } else {
       Alert.alert('사용자 정보가 없습니다.', [
         {
@@ -105,7 +104,7 @@ const StartMain = ({navigation}) => {
     if (profileResult.resultcode === '024') {
       return;
     }
-    console.log('로그인 성공');
+    console.log('회원가입 성공');
     console.log('naverToken: ', naverToken);
     const accessToken = naverToken.accessToken;
     console.log('accessToken: ', accessToken);
@@ -118,40 +117,50 @@ const StartMain = ({navigation}) => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         display: 'flex',
-        justifyContent: 'space-around',
       }}>
       <View
         style={{
-          flex: 0.5,
+          width: '100%',
+          height: '40%',
           marginTop: '25%',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          marginBottom: '20%',
         }}>
         <Image
           source={require('../../assets/MainLogo.png')}
-          style={{width: '45%', height: '66.5%'}}
+          style={{height: '80%', aspectRatio: 1}}
         />
         <Text style={{fontSize: 15, marginTop: '5%'}}>나만의 공연 티켓북</Text>
         <Text style={{fontSize: 30, marginTop: '2%'}}>플켓</Text>
       </View>
       <View
         style={{
-          flex: 0.5,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <TouchableOpacity onPress={() => naverLogin(initials)}>
-          <Text>네이버 아이디로 로그인하기</Text>
-        </TouchableOpacity>
-        {!!naverToken && <Button title="로그아웃하기" onPress={naverLogout} />}
+        {!naverToken && (
+          <TouchableOpacity onPress={() => Login(initials)}>
+            <Text>네이버 아이디로 로그인하기</Text>
+          </TouchableOpacity>
+        )}
         {!!naverToken && (
-          <Button title="회원정보 가져오기" onPress={getUserProfile} />
+          <TouchableOpacity onPress={naverLogout} style={styles.btn1}>
+            <Text style={{fontSize: 15}}>로그아웃하기</Text>
+          </TouchableOpacity>
+        )}
+        {!!naverToken && (
+          <TouchableOpacity
+            onPress={() => hanldeContinue()}
+            style={styles.btn2}>
+            <Text style={{color: 'white', fontSize: 15}}>이어하기</Text>
+          </TouchableOpacity>
         )}
         <Text style={{fontSize: 12, marginTop: '2%', color: '#565656'}}>
           계속 진행하면 Play Ticket의 서비스 약관 및 개인정보 보호정책에
@@ -160,16 +169,34 @@ const StartMain = ({navigation}) => {
           동의한 것으로 간주합니다.
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default StartMain;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-evenly',
+  btn1: {
+    width: '80%',
+    height: 50,
+    borderRadius: 20,
+    padding: 5,
+    margin: 5,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#1E1B4B',
+    borderWidth: 1,
+  },
+  btn2: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#1E1B4B',
+    borderRadius: 20,
+    padding: 5,
+    margin: 5,
+    display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });
