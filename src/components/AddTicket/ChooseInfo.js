@@ -63,7 +63,7 @@ const ChooseInfo = ({navigation, route}) => {
         setAnswer(res.data);
       })
       .catch(err => {
-        console.log('에러 발생❗️ ', err);
+        console.log('에러 발생❗️ - 선택 전송 ', err);
       });
     navigation.navigate('AddStars', {info: body, ticketID: answer});
   };
