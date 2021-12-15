@@ -27,8 +27,6 @@ const initials = Platform.OS === 'ios' ? iosKeys : androidKeys;
 
 const StartMain = ({navigation}) => {
   const [naverToken, setNaverToken] = React.useState(null);
-  const [userId, setUserId] = useState(-1);
-  const [refresh, setRefresh] = useState(false);
 
   console.log('======================[StartMain]=====================');
 
@@ -109,13 +107,14 @@ const StartMain = ({navigation}) => {
     }
     console.log('로그인 성공');
     console.log('naverToken: ', naverToken);
+    const accessToken = naverToken.accessToken;
+    console.log('accessToken: ', accessToken);
     Alert.alert('플켓', '환영합니다', [
       {
         text: '확인',
-        onPress: () => null,
+        onPress: () => navigation.navigate('NickName', {accessToken}),
       },
     ]);
-    navigation.navigate('NickName');
   };
 
   return (

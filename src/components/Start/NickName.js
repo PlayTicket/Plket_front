@@ -1,25 +1,43 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, View, Text, TextInput} from 'react-native';
 import {preURL} from '../../constants/preURL';
 import axios from 'axios';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {COLORS} from '../../styles/Colors';
 
-const NickName = ({navigation}) => {
+const NickName = ({navigation, route}) => {
+  const params = route.params;
+  const token = params.accessToken;
   const [nickName, setNickName] = useState('');
 
-  // AsyncStorage.setItem('NickName', nickName, () => {
-  //   console.log('유저 닉네임 저장 완료');
-  // });
+  useEffect(() => {
+    console.log(
+      '===========================[NickName]============================',
+    );
+  });
 
   const postNickname = () => {
-    const data = {
-      nickName: nickName,
-    };
-    axios.post(preURL.preURL + '', data).catch(err => {
-      console.log('닉네임 전송에 실패: ', err);
+    AsyncStorage.setItem('NickName', nickName, () => {
+      console.log('유저 닉네임 저장 완료');
     });
+    console.log('token: ', token);
+
+    const data = {
+      token: token,
+      user_nickname: nickName,
+    };
+    axios
+      .post(preURL.preURL + '/v1/user/save', data)
+      .then(res => {
+        console.log('닉네임 보냈다! ', res.data.userID);
+        AsyncStorage.setItem('userID', `${res.data.userID}`, () => {
+          console.log('userID 저장 완료');
+        });
+      })
+      .catch(err => {
+        console.log('닉네임 전송에 실패: ', err);
+      });
     navigation.navigate('Taste');
   };
 
@@ -49,10 +67,11 @@ const NickName = ({navigation}) => {
         onChange={event => {
           const {eventCount, target, text} = event.nativeEvent;
           setNickName(text);
+          console.log('닉네임: ', nickName);
         }}
       />
       <TouchableOpacity
-        onPress={postNickname}
+        onPress={() => postNickname()}
         style={{
           marginTop: '15%',
           backgroundColor: COLORS.navy,

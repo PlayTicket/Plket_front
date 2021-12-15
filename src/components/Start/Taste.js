@@ -5,7 +5,7 @@ const Taste = ({navigation}) => {
   return (
     <View>
       <View>
-        <TouchableOpacity onPress={() => navigation.navigate('Nickname')}>
+        <TouchableOpacity onPress={() => navigation.navigate('NickName')}>
           <Text>뒤로가기</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('NavTabs')}>
