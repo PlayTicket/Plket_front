@@ -9,9 +9,12 @@ import {
 } from 'react-native';
 import {preURL} from '../../constants/preURL';
 import axios from 'axios';
+import Header from '../etc/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyTicketMain = ({navigation}) => {
   const [data, setData] = useState([]);
+  const [nickname, setNickName] = useState('');
 
   useEffect(() => {
     axios
@@ -23,6 +26,11 @@ const MyTicketMain = ({navigation}) => {
       .catch(err => {
         console.log('에러 발생❗️ ', err);
       });
+
+    AsyncStorage.getItem('NickName', (err, result) => {
+      console.log('NickName: ', result);
+      setNickName(result);
+    });
   }, []);
 
   const listItems = ({item}) => {
@@ -66,6 +74,19 @@ const MyTicketMain = ({navigation}) => {
 
   return (
     <SafeAreaView style={{height: '100%', backgroundColor: '#ffffff'}}>
+      <Header />
+      <Text
+        style={{
+          fontSize: 17,
+          margin: 15,
+          marginLeft: 20,
+          fontWeight: 'bold',
+          borderColor: 'gray',
+          borderBottomWidth: 1,
+          paddingBottom: 20,
+        }}>
+        {nickname} 님
+      </Text>
       <FlatList data={data} renderItem={listItems} numColumns={2} />
     </SafeAreaView>
   );
